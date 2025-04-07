@@ -1,0 +1,952 @@
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Aqlli Maslahatchi</title>
+    <style>
+        :root {
+            --primary-color: #6C63FF;
+            --secondary-color: #4D44DB;
+            --text-color: #333;
+            --bg-color: #f9f9f9;
+            --card-color: #fff;
+            --button-text: #fff;
+            --button-bg: #333;
+            --shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+            --transition: all 0.3s ease;
+        }
+
+        .dark-mode {
+            --primary-color: #8A82FF;
+            --secondary-color: #6C63FF;
+            --text-color: #f0f0f0;
+            --bg-color: #121212;
+            --card-color: #1E1E1E;
+            --button-text: #121212;
+            --button-bg: #f0f0f0;
+            --shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            transition: var(--transition);
+            min-height: 100vh;
+            position: relative;
+            overflow-x: hidden;
+            background-image: radial-gradient(circle at 10% 20%, rgba(108, 99, 255, 0.1) 0%, transparent 20%),
+                              radial-gradient(circle at 90% 80%, rgba(108, 99, 255, 0.1) 0%, transparent 20%);
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 3rem;
+        }
+
+        .logo {
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: var(--primary-color);
+            display: flex;
+            align-items: center;
+        }
+
+        .logo span {
+            margin-left: 0.5rem;
+        }
+
+        .theme-toggle, .lang-toggle {
+            background: none;
+            border: none;
+            color: var(--text-color);
+            font-size: 1.2rem;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            padding: 0.5rem;
+            border-radius: 50%;
+            transition: var(--transition);
+        }
+
+        .theme-toggle:hover, .lang-toggle:hover {
+            background-color: rgba(108, 99, 255, 0.1);
+        }
+
+        .controls {
+            display: flex;
+            gap: 0.5rem;
+        }
+
+        .welcome-screen, .category-screen, .question-screen, .result-screen {
+            background-color: var(--card-color);
+            border-radius: 1.5rem;
+            padding: 3rem;
+            box-shadow: var(--shadow);
+            margin: auto;
+            width: 100%;
+            max-width: 800px;
+            text-align: center;
+            transition: var(--transition);
+            opacity: 1;
+            transform: translateY(0);
+            animation: fadeIn 0.5s ease;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        h1 {
+            font-size: 2.5rem;
+            margin-bottom: 1.5rem;
+            color: var(--primary-color);
+        }
+
+        h2 {
+            font-size: 1.8rem;
+            margin-bottom: 1rem;
+        }
+
+        p {
+            font-size: 1.1rem;
+            line-height: 1.6;
+            margin-bottom: 2rem;
+            color: var(--text-color);
+        }
+
+        .btn {
+            background-color: var(--button-bg);
+            color: var(--button-text);
+            border: none;
+            padding: 1rem 2rem;
+            font-size: 1.1rem;
+            border-radius: 50px;
+            cursor: pointer;
+            transition: var(--transition);
+            font-weight: 600;
+            display: inline-block;
+            margin: 0.5rem;
+            min-width: 200px;
+            text-align: center;
+        }
+
+        .btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+        }
+
+        .btn-primary {
+            background-color: var(--primary-color);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background-color: var(--secondary-color);
+        }
+
+        .btn-outline {
+            background-color: transparent;
+            border: 2px solid var(--primary-color);
+            color: var(--primary-color);
+        }
+
+        .btn-outline:hover {
+            background-color: var(--primary-color);
+            color: white;
+        }
+
+        .categories {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 1.5rem;
+            margin-top: 2rem;
+        }
+
+        .category-card {
+            background-color: var(--card-color);
+            border-radius: 1rem;
+            padding: 2rem;
+            width: 220px;
+            cursor: pointer;
+            transition: var(--transition);
+            box-shadow: var(--shadow);
+            border: 2px solid transparent;
+        }
+
+        .category-card:hover {
+            transform: translateY(-5px);
+            border-color: var(--primary-color);
+        }
+
+        .category-card i {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+            color: var(--primary-color);
+        }
+
+        .category-card h3 {
+            font-size: 1.3rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .question-container {
+            text-align: left;
+        }
+
+        .question {
+            font-size: 1.3rem;
+            margin-bottom: 1.5rem;
+            font-weight: 600;
+        }
+
+        .options {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+
+        .option {
+            background-color: var(--bg-color);
+            padding: 1rem 1.5rem;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: var(--transition);
+            border: 1px solid transparent;
+        }
+
+        .option:hover {
+            border-color: var(--primary-color);
+            transform: translateX(5px);
+        }
+
+        .option.selected {
+            background-color: var(--primary-color);
+            color: white;
+        }
+
+        .progress-container {
+            width: 100%;
+            background-color: var(--bg-color);
+            border-radius: 10px;
+            margin: 2rem 0;
+            height: 10px;
+            overflow: hidden;
+        }
+
+        .progress-bar {
+            height: 100%;
+            background-color: var(--primary-color);
+            width: 0%;
+            transition: width 0.3s ease;
+        }
+
+        .result-image {
+            width: 200px;
+            height: 200px;
+            margin: 0 auto 2rem;
+            background-color: var(--primary-color);
+            border-radius: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 4rem;
+        }
+
+        .hidden {
+            display: none !important;
+        }
+
+        .fade-out {
+            opacity: 0;
+            transform: translateY(-20px);
+            transition: all 0.3s ease;
+        }
+
+        .back-btn {
+            background: none;
+            border: none;
+            color: var(--primary-color);
+            font-size: 1rem;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            margin-bottom: 1rem;
+            font-weight: 600;
+        }
+
+        .back-btn i {
+            margin-right: 0.5rem;
+        }
+
+        footer {
+            text-align: center;
+            margin-top: 3rem;
+            padding: 1rem;
+            font-size: 0.9rem;
+            color: var(--text-color);
+            opacity: 0.7;
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                padding: 1.5rem;
+            }
+
+            .welcome-screen, .category-screen, .question-screen, .result-screen {
+                padding: 2rem 1.5rem;
+            }
+
+            h1 {
+                font-size: 2rem;
+            }
+
+            h2 {
+                font-size: 1.5rem;
+            }
+
+            .categories {
+                flex-direction: column;
+                align-items: center;
+            }
+
+            .category-card {
+                width: 100%;
+                max-width: 300px;
+            }
+
+            .btn {
+                width: 100%;
+                margin: 0.5rem 0;
+            }
+        }
+
+        /* Анимация загрузки */
+        .loader {
+            display: inline-block;
+            width: 50px;
+            height: 50px;
+            border: 5px solid rgba(108, 99, 255, 0.3);
+            border-radius: 50%;
+            border-top-color: var(--primary-color);
+            animation: spin 1s ease-in-out infinite;
+            margin: 2rem auto;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+    </style>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <div class="logo">
+                <i class="fas fa-robot"></i>
+                <span class="lang-uz">Aqlli Maslahatchi</span>
+                <span class="lang-ru hidden">Умный Советник</span>
+            </div>
+            <div class="controls">
+                <button class="theme-toggle" aria-label="Toggle theme">
+                    <i class="fas fa-moon"></i>
+                </button>
+                <button class="lang-toggle" aria-label="Toggle language">
+                    <i class="fas fa-language"></i>
+                </button>
+            </div>
+        </header>
+
+        <main>
+            <!-- Экран приветствия -->
+            <section class="welcome-screen">
+                <h1 class="lang-uz">Xush kelibsiz!</h1>
+                <h1 class="lang-ru hidden">Добро пожаловать!</h1>
+                
+                <p class="lang-uz">
+                    "Aqlli Maslahatchi" "Shuxrat" - bu sizga eng mos keladigan kitoblar, filmlar yoki dasturlash resurslarini tanlashda yordam beradigan platforma.
+                    Boshlash uchun tilni tanlang.
+                </p>
+                <p class="lang-ru hidden">
+                    "Умный Советник" "Шухрат" - это платформа, которая поможет вам выбрать наиболее подходящие книги, фильмы или ресурсы по программированию.
+                    Для начала выберите язык.
+                </p>
+                
+                <div>
+                    <button class="btn btn-primary lang-btn" data-lang="uz">
+                        <i class="fas fa-check"></i> O'zbekcha
+                    </button>
+                    <button class="btn btn-outline lang-btn" data-lang="ru">
+                        Русский
+                    </button>
+                </div>
+            </section>
+
+            <!-- Экран выбора категории -->
+            <section class="category-screen hidden">
+                <button class="back-btn lang-uz"><i class="fas fa-arrow-left"></i> Orqaga</button>
+                <button class="back-btn lang-ru hidden"><i class="fas fa-arrow-left"></i> Назад</button>
+                
+                <h2 class="lang-uz">Qiziqishingizga mos yo'nalishni tanlang</h2>
+                <h2 class="lang-ru hidden">Выберите направление по вашим интересам</h2>
+                
+                <p class="lang-uz">
+                    5-6 ta savolga javob bering va biz sizga eng mos keladigan tavsiyalarni beramiz.
+                </p>
+                <p class="lang-ru hidden">
+                    Ответьте на 5-6 вопросов, и мы предоставим вам наиболее подходящие рекомендации.
+                </p>
+                
+                <div class="categories">
+                    <div class="category-card" data-category="books">
+                        <i class="fas fa-book-open"></i>
+                        <h3 class="lang-uz">Kitoblar</h3>
+                        <h3 class="lang-ru hidden">Книги</h3>
+                        <p class="lang-uz">Sizga eng mos kitoblar</p>
+                        <p class="lang-ru hidden">Книги, подходящие именно вам</p>
+                    </div>
+                    
+                    <div class="category-card" data-category="movies">
+                        <i class="fas fa-film"></i>
+                        <h3 class="lang-uz">Filmlar</h3>
+                        <h3 class="lang-ru hidden">Фильмы</h3>
+                        <p class="lang-uz">Sizga mos keladigan filmlar</p>
+                        <p class="lang-ru hidden">Фильмы, которые вам понравятся</p>
+                    </div>
+                    
+                    <div class="category-card" data-category="programming">
+                        <i class="fas fa-code"></i>
+                        <h3 class="lang-uz">Dasturlash</h3>
+                        <h3 class="lang-ru hidden">Программирование</h3>
+                        <p class="lang-uz">Dasturlash yo'nalishlari va resurslar</p>
+                        <p class="lang-ru hidden">Направления и ресурсы по программированию</p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Экран вопросов -->
+            <section class="question-screen hidden">
+                <button class="back-btn lang-uz"><i class="fas fa-arrow-left"></i> Orqaga</button>
+                <button class="back-btn lang-ru hidden"><i class="fas fa-arrow-left"></i> Назад</button>
+                
+                <div class="progress-container">
+                    <div class="progress-bar"></div>
+                </div>
+                
+                <div class="question-container">
+                    <div class="question lang-uz">Savol matni</div>
+                    <div class="question lang-ru hidden">Текст вопроса</div>
+                    
+                    <div class="options">
+                        <!-- Варианты ответов будут добавляться через JavaScript -->
+                    </div>
+                </div>
+                
+                <button class="btn btn-primary next-btn lang-uz hidden">Keyingi savol</button>
+                <button class="btn btn-primary next-btn lang-ru hidden">Следующий вопрос</button>
+            </section>
+
+            <!-- Экран результатов -->
+            <section class="result-screen hidden">
+                <div class="result-image">
+                    <i class="fas fa-star"></i>
+                </div>
+                
+                <h2 class="lang-uz">Natijalar</h2>
+                <h2 class="lang-ru hidden">Результаты</h2>
+                
+                <div class="result-content">
+                    <p class="lang-uz">Sizga mos keladigan yo'nalish: <span class="result-category"></span></p>
+                    <p class="lang-ru hidden">Вам подходит направление: <span class="result-category"></span></p>
+                    
+                    <div class="result-description lang-uz"></div>
+                    <div class="result-description lang-ru hidden"></div>
+                </div>
+                
+                <button class="btn btn-primary restart-btn lang-uz">Qayta boshlash</button>
+                <button class="btn btn-primary restart-btn lang-ru hidden">Начать заново</button>
+            </section>
+        </main>
+
+        <footer>
+            <p class="lang-uz">Aqlli Maslahatchi &copy; OCHILOV SHUXRAT  </p>
+            <p class="lang-ru hidden">Умный Советник &copy; ОЧИЛОВ ШУХРАТ  </p>
+        </footer>
+    </div>
+
+    <script>
+        // Данные для вопросов и ответов
+        const questionsData = {
+            uz: {
+                books: {
+                    questions: [
+                        "Qanday kitoblarni o'qishni yaxshi ko'rasiz?",
+                        "Kitob o'qish uchun qancha vaqt ajratasiz?",
+                        "Qaysi janrdagi kitoblar sizga ko'proq yoqadi?",
+                        "O'qigan kitoblaringizdan qanday bilimlar olasiz?",
+                        "Kitob tanlashda nimalarga e'tibor berasiz?"
+                    ],
+                    options: [
+                        ["Fantastika", "Tarixiy", "Psixologiya", "Biznes"],
+                        ["Kuniga 1 soatdan kam", "Kuniga 1-2 soat", "Kuniga 3 soatdan ko'p", "Vaqt topganimda"],
+                        ["Detektiv", "Romantik", "Ilmiy", "Biografiya"],
+                        ["Hayotiy maslahatlar", "Yangiliklar", "Tarix", "Kasbiy bilimlar"],
+                        ["Muallif", "Mazmun", "Baholar", "Tavsiyalar"]
+                    ],
+                    results: {
+                        "Fantastika": "Sizga fantastika janridagi kitoblar mos keladi. Bu kitoblar sizga yangi dunyolar va g'oyalarni kashf etishga yordam beradi.",
+                        "Tarixiy": "Sizga tarixiy kitoblar mos keladi. Ular orqali o'tmish voqealari va odamlarning tajribalaridan saboq olishingiz mumkin.",
+                        "Psixologiya": "Sizga psixologiya va shaxsiy rivojlanish kitoblari mos keladi. Ular orqali inson tabiati va munosabatlarni tushunishga yordam beradi.",
+                        "Biznes": "Sizga biznes va moliyaviy mustaqillik kitoblari mos keladi. Ular orqali yangi kasbiy ko'nikmalar olishingiz mumkin."
+                    }
+                },
+                movies: {
+                    questions: [
+                        "Qanday filmlarni tomosha qilishni yaxshi ko'rasiz?",
+                        "Filmlarda siz uchun eng muhim nima?",
+                        "Qaysi mamlakat filmlarini ko'proq tomosha qilasiz?",
+                        "Filmlardan qanday his-tuyg'ularni olishni xohlaysiz?",
+                        "Sevimli film janringiz?"
+                    ],
+                    options: [
+                        ["Qo'rqinchli", "Romantik", "Jangari", "Komediya"],
+                        ["Sujet", "Aktyorlar", "Rejissyor", "Effektlar"],
+                        ["Hollywood", "Bollywood", "Koreys", "O'zbek"],
+                        ["Quvonch", "Huzur", "Hayajon", "Tafakkur"],
+                        ["Triller", "Drama", "Fantastika", "Multfilm"]
+                    ],
+                    results: {
+                        "Qo'rqinchli": "Sizga qo'rqinchli va triller janridagi filmlar mos keladi. Bu filmlar sizga hayajonli vaqt o'tkazishga imkon beradi.",
+                        "Romantik": "Sizga romantik va dramatik filmlar mos keladi. Ular orqali hissiyotlaringizni ochish va hayot haqida chuqurroq tushuncha olishingiz mumkin.",
+                        "Jangari": "Sizga jangari va sarguzashtli filmlar mos keladi. Bu filmlar sizga hayajonli va harakatga to'la vaqt o'tkazishga imkon beradi.",
+                        "Komediya": "Sizga komediya va yengil janrdagi filmlar mos keladi. Ular orqali xursand bo'lish va kayfiyatni ko'tarish mumkin."
+                    }
+                },
+                programming: {
+                    questions: [
+                        "Dasturlashda qaysi sohaga qiziqasiz?",
+                        "Dasturlashni o'rganish maqsadingiz?",
+                        "Qancha vaqt dasturlashga ajratasiz?",
+                        "Qanday loyihalarni yaratishni xohlaysiz?",
+                        "Qaysi dasturlash tilini o'rganishni xohlaysiz?"
+                    ],
+                    options: [
+                        ["Veb-dasturlash", "Mobil dasturlash", "Sun'iy intellekt", "O'yin dasturlash"],
+                        ["Kasb", "Shaxsiy loyiha", "Startap", "Qiziqish"],
+                        ["Haftada 5 soatdan kam", "Haftada 5-10 soat", "Haftada 10-20 soat", "Haftada 20 soatdan ko'p"],
+                        ["Veb-saytlar", "Mobil ilovalar", "O'yinlar", "Ma'lumotlar tahlili"],
+                        ["JavaScript", "Python", "Java", "C#"]
+                    ],
+                    results: {
+                        "Veb-dasturlash": "Sizga veb-dasturlash yo'nalishi mos keladi. Frontend yoki backend yo'nalishlaridan birini tanlashingiz mumkin.",
+                        "Mobil dasturlash": "Sizga mobil dasturlash yo'nalishi mos keladi. iOS yoki Android platformalari uchun ilovalar yaratishni o'rganishingiz mumkin.",
+                        "Sun'iy intellekt": "Sizga sun'iy intellekt va ma'lumotlar tahlili yo'nalishi mos keladi. Bu soha kelajakda keng imkoniyatlar beradi.",
+                        "O'yin dasturlash": "Sizga o'yin dasturlash yo'nalishi mos keladi. Unity yoki Unreal Engine kabi platformalarda o'yinlar yaratishingiz mumkin."
+                    }
+                }
+            },
+            ru: {
+                books: {
+                    questions: [
+                        "Какие книги вам нравится читать?",
+                        "Сколько времени вы уделяете чтению?",
+                        "Какие жанры книг вам больше нравятся?",
+                        "Какие знания вы получаете из прочитанных книг?",
+                        "На что вы обращаете внимание при выборе книги?"
+                    ],
+                    options: [
+                        ["Фантастика", "Исторические", "Психология", "Бизнес"],
+                        ["Менее 1 часа в день", "1-2 часа в день", "Более 3 часов в день", "Когда есть время"],
+                        ["Детективы", "Романтические", "Научные", "Биографии"],
+                        ["Жизненные советы", "Новости", "История", "Профессиональные знания"],
+                        ["Автор", "Содержание", "Оценки", "Рекомендации"]
+                    ],
+                    results: {
+                        "Фантастика": "Вам подходят книги в жанре фантастики. Эти книги помогут вам открыть новые миры и идеи.",
+                        "Исторические": "Вам подходят исторические книги. Они позволят вам извлечь уроки из прошлых событий и опыта людей.",
+                        "Психология": "Вам подходят книги по психологии и личностному росту. Они помогут вам лучше понять человеческую природу и отношения.",
+                        "Бизнес": "Вам подходят книги по бизнесу и финансовой независимости. Они помогут вам приобрести новые профессиональные навыки."
+                    }
+                },
+                movies: {
+                    questions: [
+                        "Какие фильмы вам нравится смотреть?",
+                        "Что для вас самое важное в фильмах?",
+                        "Фильмы каких стран вы чаще смотрите?",
+                        "Какие эмоции вы хотите получать от фильмов?",
+                        "Ваш любимый жанр фильмов?"
+                    ],
+                    options: [
+                        ["Ужасы", "Романтические", "Боевики", "Комедии"],
+                        ["Сюжет", "Актеры", "Режиссер", "Эффекты"],
+                        ["Голливуд", "Болливуд", "Корейские", "Узбекские"],
+                        ["Радость", "Умиротворение", "Волнение", "Размышление"],
+                        ["Триллер", "Драма", "Фантастика", "Мультфильмы"]
+                    ],
+                    results: {
+                        "Ужасы": "Вам подходят фильмы в жанре ужасов и триллеров. Эти фильмы позволят вам провести время в волнении.",
+                        "Романтические": "Вам подходят романтические и драматические фильмы. Они помогут вам раскрыть свои чувства и глубже понять жизнь.",
+                        "Боевики": "Вам подходят боевики и приключенческие фильмы. Эти фильмы позволят вам провести время, полное действий и волнения.",
+                        "Комедии": "Вам подходят комедии и легкие жанры фильмов. Они помогут вам поднять настроение и повеселиться."
+                    }
+                },
+                programming: {
+                    questions: [
+                        "Какая область программирования вас интересует?",
+                        "Какова ваша цель изучения программирования?",
+                        "Сколько времени вы уделяете программированию?",
+                        "Какие проекты вы хотите создавать?",
+                        "Какой язык программирования вы хотите изучить?"
+                    ],
+                    options: [
+                        ["Веб-разработка", "Мобильная разработка", "Искусственный интеллект", "Разработка игр"],
+                        ["Профессия", "Личный проект", "Стартап", "Интерес"],
+                        ["Менее 5 часов в неделю", "5-10 часов в неделю", "10-20 часов в неделю", "Более 20 часов в неделю"],
+                        ["Веб-сайты", "Мобильные приложения", "Игры", "Анализ данных"],
+                        ["JavaScript", "Python", "Java", "C#"]
+                    ],
+                    results: {
+                        "Веб-разработка": "Вам подходит направление веб-разработки. Вы можете выбрать frontend или backend направление.",
+                        "Мобильная разработка": "Вам подходит направление мобильной разработки. Вы можете научиться создавать приложения для iOS или Android.",
+                        "Искусственный интеллект": "Вам подходит направление искусственного интеллекта и анализа данных. Эта область предоставляет широкие возможности в будущем.",
+                        "Разработка игр": "Вам подходит направление разработки игр. Вы можете создавать игры на таких платформах, как Unity или Unreal Engine."
+                    }
+                }
+            }
+        };
+
+        // Состояние приложения
+        const state = {
+            currentLanguage: 'uz',
+            currentCategory: null,
+            currentQuestion: 0,
+            answers: [],
+            darkMode: false
+        };
+
+        // Элементы DOM
+        const elements = {
+            welcomeScreen: document.querySelector('.welcome-screen'),
+            categoryScreen: document.querySelector('.category-screen'),
+            questionScreen: document.querySelector('.question-screen'),
+            resultScreen: document.querySelector('.result-screen'),
+            langUzElements: document.querySelectorAll('.lang-uz'),
+            langRuElements: document.querySelectorAll('.lang-ru'),
+            themeToggle: document.querySelector('.theme-toggle'),
+            langToggle: document.querySelector('.lang-toggle'),
+            langButtons: document.querySelectorAll('.lang-btn'),
+            categoryCards: document.querySelectorAll('.category-card'),
+            backButtons: document.querySelectorAll('.back-btn'),
+            questionElement: document.querySelector('.question'),
+            optionsContainer: document.querySelector('.options'),
+            nextButton: document.querySelector('.next-btn'),
+            progressBar: document.querySelector('.progress-bar'),
+            resultCategory: document.querySelector('.result-category'),
+            resultDescription: document.querySelectorAll('.result-description'),
+            restartButton: document.querySelector('.restart-btn'),
+            resultImage: document.querySelector('.result-image')
+        };
+
+        // Инициализация приложения
+        function init() {
+            // Проверка сохраненной темы
+            const savedTheme = localStorage.getItem('theme');
+            if (savedTheme === 'dark') {
+                toggleTheme();
+            }
+
+            // Проверка сохраненного языка
+            const savedLang = localStorage.getItem('language');
+            if (savedLang === 'ru') {
+                toggleLanguage();
+            }
+
+            // Назначение обработчиков событий
+            elements.themeToggle.addEventListener('click', toggleTheme);
+            elements.langToggle.addEventListener('click', toggleLanguage);
+            
+            elements.langButtons.forEach(btn => {
+                btn.addEventListener('click', () => {
+                    const lang = btn.dataset.lang;
+                    if (lang !== state.currentLanguage) {
+                        toggleLanguage();
+                    }
+                    showCategoryScreen();
+                });
+            });
+            
+            elements.categoryCards.forEach(card => {
+                card.addEventListener('click', () => {
+                    state.currentCategory = card.dataset.category;
+                    startQuestionnaire();
+                });
+            });
+            
+            elements.backButtons.forEach(btn => {
+                btn.addEventListener('click', goBack);
+            });
+            
+            elements.nextButton.addEventListener('click', goToNextQuestion);
+            elements.restartButton.addEventListener('click', restartQuestionnaire);
+        }
+
+        // Переключение темы
+        function toggleTheme() {
+            state.darkMode = !state.darkMode;
+            document.body.classList.toggle('dark-mode');
+            
+            if (state.darkMode) {
+                elements.themeToggle.innerHTML = '<i class="fas fa-sun"></i>';
+                localStorage.setItem('theme', 'dark');
+            } else {
+                elements.themeToggle.innerHTML = '<i class="fas fa-moon"></i>';
+                localStorage.setItem('theme', 'light');
+            }
+        }
+
+        // Переключение языка
+        function toggleLanguage() {
+            state.currentLanguage = state.currentLanguage === 'uz' ? 'ru' : 'uz';
+            
+            if (state.currentLanguage === 'uz') {
+                elements.langUzElements.forEach(el => el.classList.remove('hidden'));
+                elements.langRuElements.forEach(el => el.classList.add('hidden'));
+                localStorage.setItem('language', 'uz');
+            } else {
+                elements.langUzElements.forEach(el => el.classList.add('hidden'));
+                elements.langRuElements.forEach(el => el.classList.remove('hidden'));
+                localStorage.setItem('language', 'ru');
+            }
+        }
+
+        // Показать экран выбора категории
+        function showCategoryScreen() {
+            elements.welcomeScreen.classList.add('fade-out');
+            setTimeout(() => {
+                elements.welcomeScreen.classList.add('hidden');
+                elements.welcomeScreen.classList.remove('fade-out');
+                elements.categoryScreen.classList.remove('hidden');
+            }, 300);
+        }
+
+        // Начать опросник
+        function startQuestionnaire() {
+            state.currentQuestion = 0;
+            state.answers = [];
+            
+            elements.categoryScreen.classList.add('fade-out');
+            setTimeout(() => {
+                elements.categoryScreen.classList.add('hidden');
+                elements.categoryScreen.classList.remove('fade-out');
+                elements.questionScreen.classList.remove('hidden');
+                showQuestion();
+            }, 300);
+        }
+
+        // Показать текущий вопрос
+        function showQuestion() {
+            const questions = questionsData[state.currentLanguage][state.currentCategory].questions;
+            const options = questionsData[state.currentLanguage][state.currentCategory].options;
+            
+            if (state.currentQuestion < questions.length) {
+                // Обновить прогресс бар
+                const progress = ((state.currentQuestion) / questions.length) * 100;
+                elements.progressBar.style.width = `${progress}%`;
+                
+                // Показать вопрос
+                const questionText = questions[state.currentQuestion];
+                document.querySelector(`.question.lang-${state.currentLanguage}`).textContent = questionText;
+                
+                // Показать варианты ответов
+                elements.optionsContainer.innerHTML = '';
+                const currentOptions = options[state.currentQuestion];
+                
+                currentOptions.forEach((option, index) => {
+                    const optionElement = document.createElement('div');
+                    optionElement.classList.add('option');
+                    optionElement.textContent = option;
+                    optionElement.dataset.option = option;
+                    
+                    optionElement.addEventListener('click', () => {
+                        // Удалить выделение у всех вариантов
+                        document.querySelectorAll('.option').forEach(opt => {
+                            opt.classList.remove('selected');
+                        });
+                        
+                        // Выделить выбранный вариант
+                        optionElement.classList.add('selected');
+                        
+                        // Показать кнопку "Далее"
+                        elements.nextButton.classList.remove('hidden');
+                    });
+                    
+                    elements.optionsContainer.appendChild(optionElement);
+                });
+                
+                // Скрыть кнопку "Далее" до выбора ответа
+                elements.nextButton.classList.add('hidden');
+            } else {
+                // Все вопросы отвечены, показать результаты
+                showResults();
+            }
+        }
+
+        // Перейти к следующему вопросу
+        function goToNextQuestion() {
+            const selectedOption = document.querySelector('.option.selected');
+            if (selectedOption) {
+                state.answers.push(selectedOption.dataset.option);
+                state.currentQuestion++;
+                showQuestion();
+            }
+        }
+
+        // Показать результаты
+        function showResults() {
+            // Определить наиболее подходящий результат
+            const results = questionsData[state.currentLanguage][state.currentCategory].results;
+            const answerCounts = {};
+            
+            state.answers.forEach(answer => {
+                answerCounts[answer] = (answerCounts[answer] || 0) + 1;
+            });
+            
+            let maxCount = 0;
+            let bestMatch = '';
+            
+            for (const [answer, count] of Object.entries(answerCounts)) {
+                if (count > maxCount) {
+                    maxCount = count;
+                    bestMatch = answer;
+                }
+            }
+            
+            // Если нет явного победителя, выбрать случайный
+            if (maxCount === 1) {
+                const keys = Object.keys(results);
+                bestMatch = keys[Math.floor(Math.random() * keys.length)];
+            }
+            
+            // Показать результаты
+            elements.questionScreen.classList.add('fade-out');
+            
+            // Обновить изображение результата
+            const icons = {
+                books: 'fas fa-book',
+                movies: 'fas fa-film',
+                programming: 'fas fa-laptop-code'
+            };
+            
+            elements.resultImage.innerHTML = `<i class="${icons[state.currentCategory]}"></i>`;
+            
+            // Обновить текст результата
+            const categoryNames = {
+                uz: {
+                    books: "Kitoblar",
+                    movies: "Filmlar",
+                    programming: "Dasturlash"
+                },
+                ru: {
+                    books: "Книги",
+                    movies: "Фильмы",
+                    programming: "Программирование"
+                }
+            };
+            
+            document.querySelectorAll('.result-category').forEach(el => {
+                el.textContent = bestMatch;
+            });
+            
+            document.querySelectorAll('.result-description').forEach(el => {
+                el.textContent = results[bestMatch];
+            });
+            
+            setTimeout(() => {
+                elements.questionScreen.classList.add('hidden');
+                elements.questionScreen.classList.remove('fade-out');
+                elements.resultScreen.classList.remove('hidden');
+            }, 300);
+        }
+
+        // Вернуться назад
+        function goBack() {
+            if (elements.questionScreen.classList.contains('hidden') && 
+                !elements.categoryScreen.classList.contains('hidden')) {
+                // Вернуться к выбору языка
+                elements.categoryScreen.classList.add('fade-out');
+                setTimeout(() => {
+                    elements.categoryScreen.classList.add('hidden');
+                    elements.categoryScreen.classList.remove('fade-out');
+                    elements.welcomeScreen.classList.remove('hidden');
+                }, 300);
+            } else if (elements.resultScreen.classList.contains('hidden') && 
+                       !elements.questionScreen.classList.contains('hidden')) {
+                // Вернуться к вопросам или категориям
+                if (state.currentQuestion > 0) {
+                    state.currentQuestion--;
+                    state.answers.pop();
+                    showQuestion();
+                } else {
+                    elements.questionScreen.classList.add('fade-out');
+                    setTimeout(() => {
+                        elements.questionScreen.classList.add('hidden');
+                        elements.questionScreen.classList.remove('fade-out');
+                        elements.categoryScreen.classList.remove('hidden');
+                    }, 300);
+                }
+            } else if (!elements.resultScreen.classList.contains('hidden')) {
+                // Вернуться к вопросам с результатов
+                elements.resultScreen.classList.add('fade-out');
+                setTimeout(() => {
+                    elements.resultScreen.classList.add('hidden');
+                    elements.resultScreen.classList.remove('fade-out');
+                    elements.questionScreen.classList.remove('hidden');
+                    state.currentQuestion = 0;
+                    state.answers = [];
+                    showQuestion();
+                }, 300);
+            }
+        }
+
+        // Начать опрос заново
+        function restartQuestionnaire() {
+            elements.resultScreen.classList.add('fade-out');
+            setTimeout(() => {
+                elements.resultScreen.classList.add('hidden');
+                elements.resultScreen.classList.remove('fade-out');
+                elements.categoryScreen.classList.remove('hidden');
+            }, 300);
+        }
+
+        // Запустить приложение при загрузке страницы
+        document.addEventListener('DOMContentLoaded', init);
+    </script>
+</body>
+</html>
